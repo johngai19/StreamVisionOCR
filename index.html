@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Stream with Alerts</title>
+    <style>
+        #alerts {
+            margin-top: 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Camera Stream with OCR and Object Detection</h1>
+    <img id="video" src="/video_feed" alt="Video Stream">
+    <div id="results"></div>
+    <div id="alerts"></div>
+
+    <script>
+        const socket = io();  // Connect to the WebSocket server
+
+        socket.on('new_alert', function(alertMessage) {
+            const alertsDiv = document.getElementById('alerts');
+            const alertElement = document.createElement('div');
+            alertElement.innerText = alertMessage;
+            alertsDiv.appendChild(alertElement);
+        });
+
+        async function fetchResults() {
+            const response = await fetch('/results');
+            const data = await response.json();
+            document.getElementById('results').innerText = JSON.stringify(data);
+        }
+
+        setInterval(fetchResults, 1000); // Fetch results every second
+    </script>
+</body>
+</html>
