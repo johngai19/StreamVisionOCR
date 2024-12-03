@@ -98,7 +98,7 @@ The high-level workflow of the project includes the following steps:
 
 ### **PlantUML Diagram: High-Level Workflow**
 
-Below is the PlantUML source code for the high-level workflow diagram:
+Below is the PlantUML source code for the high-level workflow diagram(need plantuml server to render):
 
 ```plantuml
 @startuml

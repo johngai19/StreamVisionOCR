@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>README.md</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+html,footer,header{
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Custom MD PDF CSS
+ */
+html,footer,header{
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+
+ }
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///Users/weizy0219/Documents/repos/freelances/R%3A%5C2.Travail%5C1.Enseignement%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css"><link rel="stylesheet" href="file:///Users/weizy0219/Documents/repos/freelances/D%3A%5Crdaros%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css">
+</head>
+
+<body>
+    <h2 id="ai-tools-inventory-manager">AI Tools Inventory Manager</h2>
+<h2 id="project-proposal"><strong>Project Proposal</strong></h2>
+<h3 id="project-name"><strong>Project Name:</strong></h3>
+<p><strong>Dockerized OCR &amp; Image Detection on Live Stream</strong><br>
+<strong>Date: 02/12/2024</strong></p>
+<hr>
+<h2 id="introduction"><strong>Introduction</strong></h2>
+<p>This document outlines the objectives, features, user stories, and workflows for the OCR and Text Recognition System. The goal is to provide a web-based application for object detection and OCR processing. This document serves as an agreement between the freelancer and the client to confirm that the features, functions, and interfaces comply with the client's requirements.</p>
+<hr>
+<h2 id="project-objectives"><strong>Project Objectives</strong></h2>
+<ol>
+<li>Provide a web-based application for object detection and OCR (Optical Character Recognition).</li>
+<li>Enable users to upload images or capture frames from live video feeds for text recognition.</li>
+<li>Apply object detection to detect text objects, preprocess them, and perform OCR to return detected text (AI-based text correction is <strong>not included</strong> in this project).</li>
+<li>Offer a user-friendly interface with video source selection, playback controls, and results display.</li>
+</ol>
+<hr>
+<h2 id="project-scope"><strong>Project Scope</strong></h2>
+<h3 id="core-features"><strong>Core Features</strong></h3>
+<h4 id="1-image-upload-ocr"><strong>1. Image Upload OCR</strong></h4>
+<ul>
+<li>Upload an image file for OCR processing.</li>
+<li>Detect and extract text objects using object detection.</li>
+<li>Preprocess detected text objects and perform OCR on them.</li>
+</ul>
+<h4 id="2-video-integration"><strong>2. Video Integration</strong></h4>
+<ul>
+<li>Select video sources (e.g., webcams or external devices).</li>
+<li>Live preview of selected video feed.</li>
+<li>Capture a frame from the video feed for OCR processing.</li>
+</ul>
+<h4 id="3-object-detection-and-preprocessing"><strong>3. Object Detection and Preprocessing</strong></h4>
+<ul>
+<li>Detect text objects in uploaded images or captured frames.</li>
+<li>Preprocess detected text objects using OpenCV (e.g., resizing, thresholding, noise reduction).</li>
+</ul>
+<h4 id="4-responsive-web-interface"><strong>4. Responsive Web Interface</strong></h4>
+<ul>
+<li>HTML-based user interface using Ninja templates.</li>
+<li>Interactive controls for video playback, image upload, and OCR processing.</li>
+</ul>
+<hr>
+<h2 id="user-stories"><strong>User Stories</strong></h2>
+<h3 id="1-object-detection"><strong>1. Object Detection</strong></h3>
+<ul>
+<li><strong>As a user</strong>, I want to upload an image file so that I can detect all text objects in the image.</li>
+<li><strong>Acceptance Criteria</strong>:
+<ul>
+<li>The application should process the uploaded image and return a list of cropped images containing detected text objects.</li>
+<li>The cropped images should be preprocessed using OpenCV before OCR.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="2-image-ocr"><strong>2. Image OCR</strong></h3>
+<ul>
+<li><strong>As a user</strong>, I want to upload an image file so that I can extract text from the image.</li>
+<li><strong>Acceptance Criteria</strong>:
+<ul>
+<li>The application should process the uploaded image and return detected text.</li>
+<li>Text objects should be preprocessed before performing OCR.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="3-video-ocr"><strong>3. Video OCR</strong></h3>
+<ul>
+<li><strong>As a user</strong>, I want to select a video source and capture frames for text recognition.</li>
+<li><strong>Acceptance Criteria</strong>:
+<ul>
+<li>The application should list all available video sources.</li>
+<li>The selected video feed should be displayed in real-time.</li>
+<li>Captured frames should be processed for OCR, and results should be displayed below the video.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-ai-text-correction"><strong>4. AI Text Correction</strong></h3>
+<ul>
+<li><strong>As a user</strong>, I want to see corrected OCR text so that errors in recognition are minimized (optional).</li>
+<li><strong>Acceptance Criteria</strong>:
+<ul>
+<li>The AI model should refine the detected text.</li>
+<li>The corrected text should be displayed alongside the original OCR text.</li>
+<li><strong>Note</strong>: AI text correction is <strong>not included</strong> in this project.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="workflow-diagrams"><strong>Workflow Diagrams</strong></h2>
+<h3 id="1-high-level-workflow"><strong>1. High-Level Workflow</strong></h3>
+<p>The high-level workflow of the project includes the following steps:</p>
+<ol>
+<li>User uploads an image or selects a video source.</li>
+<li>The backend processes the image or captured video frame.</li>
+<li>Detect text objects using object detection and preprocess them.</li>
+<li>Perform OCR on the preprocessed text objects using Tesseract.</li>
+<li>Display the results to the user.</li>
+</ol>
+<hr>
+<h3 id="plantuml-diagram-high-level-workflow"><strong>PlantUML Diagram: High-Level Workflow</strong></h3>
+<p>Below is the PlantUML source code for the high-level workflow diagram(need plantuml server to render):</p>
+<pre class="hljs"><code><div>@startuml
+start
+:User uploads an image or selects a video source;
+
+if (Image selected?) then (yes)
+    :Upload image to backend;
+    :Detect text objects using object detection;
+    :Preprocess text objects (OpenCV);
+else (no)
+    :Select video source;
+    :Live preview video feed;
+    :Capture frame from video;
+    :Detect text objects using object detection;
+    :Preprocess text objects (OpenCV);
+endif
+
+:Perform OCR using Tesseract;
+:Display extracted text to the user;
+stop
+@enduml
+</div></code></pre>
+<hr>
+<h3 id="2-component-diagram"><strong>2. Component Diagram</strong></h3>
+<p>This diagram illustrates the architecture of the system, including web interface, backend, and services.</p>
+<hr>
+<h3 id="plantuml-diagram-component-diagram"><strong>PlantUML Diagram: Component Diagram</strong></h3>
+<p>Below is the PlantUML source code for the component diagram:</p>
+<pre class="hljs"><code><div>@startuml
+package &quot;Frontend&quot; {
+    [Web Interface] --&gt; [Video Source Selector]
+    [Web Interface] --&gt; [Image Upload Form]
+    [Web Interface] --&gt; [Results Display]
+}
+
+package &quot;Backend&quot; {
+    [Flask Application] --&gt; [Object Detection Service]
+    [Flask Application] --&gt; [Preprocessing Service]
+    [Flask Application] --&gt; [OCR Service]
+
+    [Object Detection Service] --&gt; [YOLO/SSD Model]
+    [Preprocessing Service] --&gt; [OpenCV]
+    [OCR Service] --&gt; [Tesseract OCR]
+}
+
+[Web Interface] --&gt; [Flask Application]
+@enduml
+</div></code></pre>
+<hr>
+<h2 id="features-and-interfaces"><strong>Features and Interfaces</strong></h2>
+<h3 id="web-interface"><strong>Web Interface</strong></h3>
+<ol>
+<li>
+<p><strong>Image Upload</strong>:</p>
+<ul>
+<li>Upload an image file for OCR processing via a file input form.</li>
+<li>Display results (detected text) below the upload form.</li>
+</ul>
+</li>
+<li>
+<p><strong>Video Source and Playback</strong>:</p>
+<ul>
+<li>Dropdown menu to select video sources (e.g., webcams).</li>
+<li>Live preview of the selected video feed.</li>
+<li>Capture button to grab a frame from the video feed for OCR processing.</li>
+</ul>
+</li>
+<li>
+<p><strong>Results Display</strong>:</p>
+<ul>
+<li>Display OCR results dynamically after processing.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="backend-functions"><strong>Backend Functions</strong></h2>
+<h3 id="1--get"><strong>1. <code>/</code> (GET)</strong></h3>
+<ul>
+<li><strong>Purpose</strong>: Serve the web interface.</li>
+<li><strong>Response</strong>: Renders the <code>index.html</code> template.</li>
+</ul>
+<hr>
+<h3 id="2-process-post"><strong>2. <code>/process</code> (POST)</strong></h3>
+<ul>
+<li><strong>Purpose</strong>: Process an uploaded image file for OCR.</li>
+<li><strong>Input</strong>: Image file.</li>
+<li><strong>Output</strong>:<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"text_objects"</span>: [
+      <span class="hljs-string">"Text object 1 content"</span>,
+      <span class="hljs-string">"Text object 2 content"</span>
+  ]
+}
+</div></code></pre>
+</li>
+</ul>
+<hr>
+<h3 id="3-capture-post"><strong>3. <code>/capture</code> (POST)</strong></h3>
+<ul>
+<li><strong>Purpose</strong>: Process a captured frame from the video feed for OCR.</li>
+<li><strong>Input</strong>: Base64-encoded image.</li>
+<li><strong>Output</strong>:<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"text_objects"</span>: [
+      <span class="hljs-string">"Text object 1 content"</span>,
+      <span class="hljs-string">"Text object 2 content"</span>
+  ]
+}
+</div></code></pre>
+</li>
+</ul>
+<hr>
+<h2 id="deliverables"><strong>Deliverables</strong></h2>
+<ol>
+<li>
+<p><strong>Functional Features</strong>:</p>
+<ul>
+<li>Image upload OCR with object detection and preprocessing.</li>
+<li>Video source selection and frame capture for OCR.</li>
+</ul>
+</li>
+<li>
+<p><strong>Web Interface</strong>:</p>
+<ul>
+<li>Responsive design with Ninja templates.</li>
+<li>Video playback controls and results display.</li>
+</ul>
+</li>
+<li>
+<p><strong>Backend Services</strong>:</p>
+<ul>
+<li>Flask application integrating object detection, preprocessing, and OCR using Tesse~ract.</li>
+</ul>
+</li>
+<li>
+<p><strong>Dockerized Deployment</strong>:</p>
+<ul>
+<li>Dockerfile for containerized deployment.</li>
+<li>Instructions for running the application locally or in a container.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="acceptance-criteria"><strong>Acceptance Criteria</strong></h2>
+<ol>
+<li>The web interface should allow users to upload images and process them for OCR.</li>
+<li>The video integration should enable live preview and frame capture for OCR processing.</li>
+<li>Results (detected text) should be displayed dynamically on the interface.</li>
+<li>The project should be containerized and deployable using Docker.</li>
+</ol>
+<hr>
+<h2 id="next-steps"><strong>Next Steps</strong></h2>
+<ol>
+<li>Review this document and confirm the outlined features and workflows.</li>
+<li>Provide feedback or additional requirements (if any).</li>
+<li>Upon confirmation, proceed with implementation and testing.</li>
+</ol>
+<hr>
+<h2 id="feedback-section"><strong>Feedback Section</strong></h2>
+<table>
+<thead>
+<tr>
+<th><strong>Feature/Functionality</strong></th>
+<th><strong>Compliant (Yes/No)</strong></th>
+<th><strong>Comments</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Image Upload OCR</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Video Source and Capture</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Object Detection and Preprocessing</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Web Interface Design</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Dockerized Deployment</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>This document ensures all modified features and requirements are captured accurately. Let me know if further refinements are needed! 🚀</p>
+
+</body>
+
+</html>
