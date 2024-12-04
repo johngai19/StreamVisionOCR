@@ -47,4 +47,54 @@
         <p id="alert-message"></p>
     </div>
 </section>
+<script>
+    // Local Camera Stream
+    const startCameraButton = document.getElementById('start-camera');
+    const stopCameraButton = document.getElementById('stop-camera');
+    const cameraStream = document.getElementById('camera-stream');
+    let localStream;
+
+    startCameraButton.addEventListener('click', async () => {
+        try {
+            localStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            cameraStream.srcObject = localStream;
+            startCameraButton.disabled = true;
+            stopCameraButton.disabled = false;
+        } catch (error) {
+            console.error('Error accessing local camera:', error);
+        }
+    });
+
+    stopCameraButton.addEventListener('click', () => {
+        if (localStream) {
+            localStream.getTracks().forEach(track => track.stop());
+            cameraStream.srcObject = null;
+            startCameraButton.disabled = false;
+            stopCameraButton.disabled = true;
+        }
+    });
+
+    // Online Video Stream
+    const startStreamButton = document.getElementById('start-stream');
+    const stopStreamButton = document.getElementById('stop-stream');
+    const onlineStream = document.getElementById('online-stream');
+    const streamUrlInput = document.getElementById('stream-url');
+
+    startStreamButton.addEventListener('click', () => {
+        const streamUrl = streamUrlInput.value;
+        if (streamUrl) {
+            onlineStream.src = streamUrl;
+            onlineStream.play();
+            startStreamButton.disabled = true;
+            stopStreamButton.disabled = false;
+        }
+    });
+
+    stopStreamButton.addEventListener('click', () => {
+        onlineStream.pause();
+        onlineStream.src = '';
+        startStreamButton.disabled = false;
+        stopStreamButton.disabled = true;
+    });
+</script>
 {% endblock %}

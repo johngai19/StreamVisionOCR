@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, Response, jsonify
 from app.services.processing_service import process_frame, process_image
-from app.utils.helpers import allowed_file
+from app.utils.helper import allowed_file
 from app import socketio
 
 import cv2

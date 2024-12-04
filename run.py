@@ -4,7 +4,7 @@ from app.routes import main as main_blueprint
 import os
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, template_folder='app/templates')
 
 # Configure the app
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_secret_key')  # Use environment variable or default
@@ -22,4 +22,4 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 
 if __name__ == '__main__':
     # Run the app with SocketIO support
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5001, debug=True)
