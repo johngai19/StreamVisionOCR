@@ -1,5 +1,7 @@
+import numpy as np
+import cv2
 from app.middleware.preprocess import preprocess_frame
-from app.models.object_detection import detect_objects
+from app.models.object_detection import detect_objects,detect_text
 from app.models.ocr import extract_text_from_regions
 
 
@@ -33,37 +35,38 @@ def process_frame(frame):
     return processed_frame, detected_objects
 
 
+
 def process_image(image_data):
-    """
-    Process an uploaded image: preprocess, detect objects, run OCR, and generate results.
-
-    Args:
-        image_data (bytes): The raw image data (uploaded file).
-
-    Returns:
-        dict: A JSON-compatible dictionary containing the detected objects and OCR results.
-    """
-    # Decode the image from bytes
+    # Convert image data to numpy array
     np_arr = np.frombuffer(image_data, np.uint8)
     image = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-
-    # Step 1: Preprocess the image
-    preprocessed_image = preprocess_frame(image)
-
-    # Step 2: Perform object detection
-    detected_objects = detect_objects(preprocessed_image)
-
-    # Step 3: Perform OCR on detected regions
+    
+    # Detect objects
+    detected_objects = detect_objects(image)
+    
+    # Detect text areas
+    detected_text_areas = detect_text(image)
+    
+    # Extract text from detected text areas
     for obj in detected_objects:
-        region = obj.get("position", {})
-        if region:
-            obj["ocr_text"] = extract_text_from_regions(preprocessed_image, [region])[0]["text"]
-
-    # Step 4: Construct the JSON output
-    output = {"detected_objects": detected_objects}
-
-    return output
-
+        region = {
+            "x": obj["position"][0],
+            "y": obj["position"][1],
+            "width": obj["position"][2],
+            "height": obj["position"][3]
+        }
+        extracted_texts = extract_text_from_regions(image, [region])
+        if extracted_texts:
+            obj["ocr_text"] = extracted_texts[0]["text"]
+        else:
+            obj["ocr_text"] = ""
+    # Combine results
+    processed_data = {
+        'objects': detected_objects,
+        'text_areas': detected_text_areas
+    }
+    
+    return processed_data
 
 def draw_results(frame, detected_objects):
     """

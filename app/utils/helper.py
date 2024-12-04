@@ -15,8 +15,8 @@ def allowed_file(filename):
     Returns:
         bool: True if the file extension is allowed, False otherwise.
     """
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'webp'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 def save_file(file, upload_folder):
     """

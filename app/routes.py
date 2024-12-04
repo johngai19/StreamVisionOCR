@@ -4,6 +4,7 @@ from app.utils.helper import allowed_file
 from app import socketio
 
 import cv2
+import numpy as np
 
 # Blueprint for the main routes
 main = Blueprint('main', __name__)
@@ -53,25 +54,36 @@ def generate_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+# Example of serializing the data
+def process_data(data):
+    def convert_to_serializable(obj):
+        if isinstance(obj, np.float32):
+            return float(obj)
+        elif isinstance(obj, dict):
+            return {key: convert_to_serializable(value) for key, value in obj.items()}
+        elif isinstance(obj, list):
+            return [convert_to_serializable(item) for item in obj]
+        else:
+            return obj
+
+    return convert_to_serializable(data)
+
 
 @main.route('/upload', methods=['POST'])
 def upload():
-    """
-    Endpoint for uploading an image to be processed.
-    """
     if 'file' not in request.files:
-        return jsonify({"error": "No file uploaded"}), 400
-
+        return jsonify({'error': 'No file part'}), 400
     file = request.files['file']
-
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
     if file and allowed_file(file.filename):
-        # Process the uploaded image
         image_data = file.read()
         processed_data = process_image(image_data)
-
-        return jsonify(processed_data), 200
+        serializable_data = process_data(processed_data)
+        #print(serializable_data)
+        return jsonify(serializable_data), 200
     else:
-        return jsonify({"error": "Invalid file format"}), 400
+        return jsonify({'error': 'Invalid file type'}), 400
 
 
 @main.route('/set_video_source', methods=['POST'])
