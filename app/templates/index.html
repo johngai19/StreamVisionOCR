@@ -1,16 +1,29 @@
-{% extends "layout.html" %}
-
-{% block title %}Home - Image and Video Processing{% endblock %}
-
-{% block content %}
-<section class="upload-section">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image and Video Processing</title>
+    <style>
+        .results {
+            margin-top: 20px;
+        }
+        .results img {
+            max-width: 100%;
+        }
+        .text-areas {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
     <h2>Image and Video Processing</h2>
     <p>Select an option to upload an image, stream from your local camera, or input an online video stream URL for object detection and OCR.</p>
 
     <!-- File Upload -->
     <div class="file-upload">
         <h3>Upload an Image</h3>
-        <form action="{{ url_for('main.upload') }}" method="POST" enctype="multipart/form-data">
+        <form id="upload-form" enctype="multipart/form-data">
             <label for="file" class="file-label">Choose file:</label>
             <input type="file" id="file" name="file" required>
             <button type="submit" class="btn-upload">Upload</button>
@@ -23,6 +36,7 @@
         <button id="start-camera" class="btn-start">Start Camera</button>
         <button id="stop-camera" class="btn-stop" disabled>Stop Camera</button>
         <video id="camera-stream" autoplay muted></video>
+        <button id="capture-camera" class="btn-capture" disabled>Capture</button>
     </div>
 
     <!-- Online Video Stream -->
@@ -35,66 +49,128 @@
             <button type="button" id="stop-stream" class="btn-stop" disabled>Stop Stream</button>
         </form>
         <video id="online-stream" autoplay muted></video>
+        <button id="capture-stream" class="btn-capture" disabled>Capture</button>
     </div>
 
     <!-- Processing Results -->
     <div class="results">
-        <h3>Processed Video Feed</h3>
-        <canvas id="processed-canvas"></canvas>
+        <h3>Processed Image</h3>
+        <img id="processed-image" src="" alt="Processed Image">
     </div>
 
-    <div class="alert-container">
-        <p id="alert-message"></p>
+    <div class="text-areas">
+        <h3>Recognized Objects</h3>
+        <textarea id="recognized-objects" rows="10" cols="50" readonly></textarea>
+        <h3>OCR Result</h3>
+        <textarea id="ocr-result" rows="10" cols="50" readonly></textarea>
     </div>
-</section>
-<script>
-    // Local Camera Stream
-    const startCameraButton = document.getElementById('start-camera');
-    const stopCameraButton = document.getElementById('stop-camera');
-    const cameraStream = document.getElementById('camera-stream');
-    let localStream;
 
-    startCameraButton.addEventListener('click', async () => {
-        try {
-            localStream = await navigator.mediaDevices.getUserMedia({ video: true });
-            cameraStream.srcObject = localStream;
-            startCameraButton.disabled = true;
-            stopCameraButton.disabled = false;
-        } catch (error) {
-            console.error('Error accessing local camera:', error);
+    <script>
+        // Local Camera Stream
+        const startCameraButton = document.getElementById('start-camera');
+        const stopCameraButton = document.getElementById('stop-camera');
+        const captureCameraButton = document.getElementById('capture-camera');
+        const cameraStream = document.getElementById('camera-stream');
+        let localStream;
+
+        startCameraButton.addEventListener('click', async () => {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                cameraStream.srcObject = localStream;
+                startCameraButton.disabled = true;
+                stopCameraButton.disabled = false;
+                captureCameraButton.disabled = false;
+            } catch (error) {
+                console.error('Error accessing local camera:', error);
+            }
+        });
+
+        stopCameraButton.addEventListener('click', () => {
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                cameraStream.srcObject = null;
+                startCameraButton.disabled = false;
+                stopCameraButton.disabled = true;
+                captureCameraButton.disabled = true;
+            }
+        });
+
+        captureCameraButton.addEventListener('click', () => {
+            captureAndProcessImage(cameraStream);
+        });
+
+        // Online Video Stream
+        const startStreamButton = document.getElementById('start-stream');
+        const stopStreamButton = document.getElemsentById('stop-stream');
+        const captureStreamButton = document.getElementById('capture-stream');
+        const onlineStream = document.getElementById('online-stream');
+        const streamUrlInput = document.getElementById('stream-url');
+
+        startStreamButton.addEventListener('click', () => {
+            const streamUrl = streamUrlInput.value;
+            if (streamUrl) {
+                onlineStream.src = streamUrl;
+                onlineStream.play();
+                startStreamButton.disabled = true;
+                stopStreamButton.disabled = false;
+                captureStreamButton.disabled = false;
+            }
+        });
+
+        stopStreamButton.addEventListener('click', () => {
+            onlineStream.pause();
+            onlineStream.src = '';
+            startStreamButton.disabled = false;
+            stopStreamButton.disabled = true;
+            captureStreamButton.disabled = true;
+        });
+
+        captureStreamButton.addEventListener('click', () => {
+            captureAndProcessImage(onlineStream);
+        });
+
+        // Upload Image
+        const uploadForm = document.getElementById('upload-form');
+        uploadForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(uploadForm);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            displayResults(result);
+        });
+
+        // Capture and Process Image
+        async function captureAndProcessImage(videoElement) {
+            const canvas = document.createElement('canvas');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            const dataUrl = canvas.toDataURL('image/jpeg');
+            const blob = await fetch(dataUrl).then(res => res.blob());
+            const formData = new FormData();
+            formData.append('file', blob, 'capture.jpg');
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            displayResults(result);
         }
-    });
 
-    stopCameraButton.addEventListener('click', () => {
-        if (localStream) {
-            localStream.getTracks().forEach(track => track.stop());
-            cameraStream.srcObject = null;
-            startCameraButton.disabled = false;
-            stopCameraButton.disabled = true;
+        // Display Results
+        function displayResults(result) {
+            const processedImage = document.getElementById('processed-image');
+            const recognizedObjects = document.getElementById('recognized-objects');
+            const ocrResult = document.getElementById('ocr-result');
+
+            processedImage.src = 'data:image/jpeg;base64,' + result.processed_image;
+            recognizedObjects.value = JSON.stringify(result.objects, null, 2);
+            ocrResult.value = result.all_text;
         }
-    });
-
-    // Online Video Stream
-    const startStreamButton = document.getElementById('start-stream');
-    const stopStreamButton = document.getElementById('stop-stream');
-    const onlineStream = document.getElementById('online-stream');
-    const streamUrlInput = document.getElementById('stream-url');
-
-    startStreamButton.addEventListener('click', () => {
-        const streamUrl = streamUrlInput.value;
-        if (streamUrl) {
-            onlineStream.src = streamUrl;
-            onlineStream.play();
-            startStreamButton.disabled = true;
-            stopStreamButton.disabled = false;
-        }
-    });
-
-    stopStreamButton.addEventListener('click', () => {
-        onlineStream.pause();
-        onlineStream.src = '';
-        startStreamButton.disabled = false;
-        stopStreamButton.disabled = true;
-    });
-</script>
-{% endblock %}
+    </script>
+</body>
+</html>
