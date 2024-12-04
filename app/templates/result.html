@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}Processing Results{% endblock %}
+
+{% block content %}
+<section class="results-section">
+    <h2>Processing Results</h2>
+    <p>View the results of object detection and OCR below.</p>
+
+    <!-- Display Processed Image -->
+    <div class="processed-image-container">
+        <h3>Processed Image</h3>
+        <canvas id="results-canvas"></canvas>
+    </div>
+
+    <!-- Back to Home Button -->
+    <div class="back-button">
+        <a href="{{ url_for('main.index') }}" class="btn-back">Back to Home</a>
+    </div>
+</section>
+{% endblock %}

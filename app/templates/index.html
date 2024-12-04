@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}Home - Image and Video Processing{% endblock %}
+
+{% block content %}
+<section class="upload-section">
+    <h2>Image and Video Processing</h2>
+    <p>Select an option to upload an image, stream from your local camera, or input an online video stream URL for object detection and OCR.</p>
+
+    <!-- File Upload -->
+    <div class="file-upload">
+        <h3>Upload an Image</h3>
+        <form action="{{ url_for('main.upload') }}" method="POST" enctype="multipart/form-data">
+            <label for="file" class="file-label">Choose file:</label>
+            <input type="file" id="file" name="file" required>
+            <button type="submit" class="btn-upload">Upload</button>
+        </form>
+    </div>
+
+    <!-- Local Camera Stream -->
+    <div class="local-camera">
+        <h3>Stream from Local Camera</h3>
+        <button id="start-camera" class="btn-start">Start Camera</button>
+        <button id="stop-camera" class="btn-stop" disabled>Stop Camera</button>
+        <video id="camera-stream" autoplay muted></video>
+    </div>
+
+    <!-- Online Video Stream -->
+    <div class="online-stream">
+        <h3>Stream from Online Video URL</h3>
+        <form id="stream-form">
+            <label for="stream-url" class="stream-label">Stream URL:</label>
+            <input type="url" id="stream-url" name="stream-url" placeholder="Enter video stream URL" required>
+            <button type="button" id="start-stream" class="btn-start">Start Stream</button>
+            <button type="button" id="stop-stream" class="btn-stop" disabled>Stop Stream</button>
+        </form>
+        <video id="online-stream" autoplay muted></video>
+    </div>
+
+    <!-- Processing Results -->
+    <div class="results">
+        <h3>Processed Video Feed</h3>
+        <canvas id="processed-canvas"></canvas>
+    </div>
+
+    <div class="alert-container">
+        <p id="alert-message"></p>
+    </div>
+</section>
+{% endblock %}
