@@ -1,5 +1,5 @@
 import numpy as np
-import cv2
+import cv2,base64
 from app.middleware.preprocess import preprocess_frame
 from app.models.object_detection import detect_objects,detect_text
 from app.models.ocr import extract_text_from_regions
@@ -47,6 +47,9 @@ def process_image(image_data):
     # Detect text areas
     detected_text_areas = detect_text(image)
     
+    # Initialize all_text variable
+    all_text = ""
+    
     # Extract text from detected text areas
     for obj in detected_objects:
         region = {
@@ -58,12 +61,29 @@ def process_image(image_data):
         extracted_texts = extract_text_from_regions(image, [region])
         if extracted_texts:
             obj["ocr_text"] = extracted_texts[0]["text"]
+            all_text += extracted_texts[0]["text"] + " "
         else:
             obj["ocr_text"] = ""
+    
+    # Draw rectangles and text on the image
+    for obj in detected_objects:
+        x, y, w, h = obj["position"]
+        label = f"{obj['label']} ({obj['confidence']:.2f})"
+        ocr_text = obj["ocr_text"]
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        cv2.putText(image, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv2.putText(image, ocr_text, (x, y + h + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+    
+    # Encode the processed image to base64
+    _, buffer = cv2.imencode('.jpg', image)
+    processed_image_data = base64.b64encode(buffer).decode('utf-8')
+    
     # Combine results
     processed_data = {
         'objects': detected_objects,
-        'text_areas': detected_text_areas
+        'text_areas': detected_text_areas,
+        'all_text': all_text,
+        'processed_image': processed_image_data
     }
     
     return processed_data
