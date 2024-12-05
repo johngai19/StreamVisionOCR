@@ -2,6 +2,14 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,macos,flask,python,vs
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,macos,flask,python,vs
 
+## Cache
+__pycache__/
+*.pyc
+*.pyo
+# C extensions
+*.so
+
+
 ### Flask ###
 instance/*
 !instance/.gitignore
